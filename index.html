@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sushil Adhikari | Product Designer</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b0b0c;
+      --fg: #ffffff;
+      --muted: #a1a1aa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.1;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 24px 64px;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+    }
+
+    nav .logo {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    nav .links a {
+      margin-left: 32px;
+      font-size: 14px;
+      color: var(--muted);
+      transition: color 0.3s ease;
+    }
+
+    nav .links a:hover { color: var(--fg); }
+
+    /* HERO */
+    .hero {
+position: relative;
+min-height: 100vh;
+padding: 120px 64px;
+display: flex;
+align-items: center;
+background: url('./hero-bg.png') no-repeat center / cover;
+background-attachment: fixed;
+}
+
+
+.hero::before {
+content: '';
+position: absolute;
+inset: 0;
+background: linear-gradient(to right, rgba(11,11,12,.95), rgba(11,11,12,.4));
+z-index: 1;
+}
+
+
+.hero h1 {
+position: relative;
+z-index: 2;
+font-size: clamp(48px, 8vw, 120px);
+font-weight: 900;
+max-width: 900px;
+}
+
+
+.hero h1 span { color: var(--muted); }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 64px;
+      font-size: 14px;
+      color: var(--muted);
+      animation: float 2s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 160px 64px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .section-title {
+      font-size: clamp(32px, 4vw, 72px);
+      font-weight: 800;
+      margin-bottom: 48px;
+    }
+
+    /* ABOUT */
+    .about p {
+      max-width: 720px;
+      font-size: 20px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* WORK */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .project {
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .project:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .project h3 { font-size: 24px; margin-bottom: 12px; }
+    .project p { color: var(--muted); font-size: 16px; }
+
+    /* CONTACT */
+    .contact a {
+      font-size: clamp(32px, 5vw, 72px);
+      font-weight: 800;
+      display: inline-block;
+      margin-top: 32px;
+      position: relative;
+    }
+
+    .contact a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 2px;
+      background: var(--fg);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .contact a:hover::after { transform: scaleX(1); }
+
+    footer {
+      padding: 64px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav, section, .hero { padding: 24px; }
+      .scroll-indicator { left: 24px; }
+      .hero { 
+        background-position: center;
+        max-height: none;
+        height: 100vh;
+      }
+      .hero h1 {
+        margin-left: 0;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">SUSHI</div>
+    <div class="links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>
+      Hello! I'm <br />
+      <span>a product designer</span><br />
+      with strong UI skills<br />
+      and solid UX thinking.
+    </h1>
+    <div class="scroll-indicator">Scroll ↓</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <h2 class="section-title">About</h2>
+    <p>
+      I'm Sushil Adhikari (Sushi), a product designer focused on building clean,
+      user-centered digital experiences. I care deeply about clarity, hierarchy,
+      and thoughtful interactions that feel natural and intentional.
+    </p>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <h2 class="section-title">Selected Work</h2>
+    <div class="projects">
+      <div class="project">
+        <h3>Project One</h3>
+        <p>Product design, UI systems, UX flows</p>
+      </div>
+      <div class="project">
+        <h3>Project Two</h3>
+        <p>Mobile experience, interaction design</p>
+      </div>
+      <div class="project">
+        <h3>Project Three</h3>
+        <p>Web app redesign, usability improvements</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <h2 class="section-title">Let's work together</h2>
+    <a href="mailto:sushilforwork@gmail.com">sushilforwork@gmail.com</a>
+  </section>
+
+  <footer>
+    © 2025 Sushil Adhikari — Designed with intent
+  </footer>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Fade-in on scroll
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(sec => {
+      sec.style.opacity = 0;
+      sec.style.transform = 'translateY(40px)';
+      sec.style.transition = 'all 0.8s ease';
+      observer.observe(sec);
+    });
+  </script>
+
+</body>
+</html>
