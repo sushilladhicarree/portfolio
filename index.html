@@ -1,239 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sushil Adhikari | Product Designer</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap"
-    rel="stylesheet">
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sushil Adhikari | UI/UX Designer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Comic+Neue:wght@400;700&family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
+<body class="theme-spidey">
 
-<body>
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-  <!-- NAV -->
-  <nav>
-    <div class="container">
-      <a href="#" class="logo">SUSHI.</a>
-      <div class="nav-links">
-        <a href="#about">About</a>
-        <a href="#playground">Playground</a>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <a href="mailto:sushilforwork@gmail.com" class="btn btn-outline"
-        style="padding: 10px 20px; font-size: 14px;">Let's Talk</a>
+    <!-- BACKGROUND EFFECTS -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <!-- SPIDER WEBS (SVG corners) -->
+    <svg class="web-corner web-top-left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="rgba(0,0,0,0.15)" stroke-width="1" fill="none">
+            <path d="M0,0 Q100,50 200,0"/>
+            <path d="M0,0 Q50,100 0,200"/>
+            <path d="M0,0 L200,200"/>
+            <path d="M0,0 Q80,80 160,160"/>
+            <path d="M0,0 Q40,80 80,160"/>
+            <path d="M0,0 Q80,40 160,80"/>
+            <!-- Circular threads -->
+            <ellipse cx="30" cy="30" rx="25" ry="25"/>
+            <ellipse cx="50" cy="50" rx="45" ry="45"/>
+            <ellipse cx="75" cy="75" rx="70" ry="70"/>
+            <ellipse cx="100" cy="100" rx="95" ry="95"/>
+        </g>
+    </svg>
+    
+    <svg class="web-corner web-top-right" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="rgba(0,0,0,0.1)" stroke-width="1" fill="none">
+            <path d="M200,0 Q100,50 0,0"/>
+            <path d="M200,0 Q150,100 200,200"/>
+            <path d="M200,0 L0,200"/>
+            <ellipse cx="170" cy="30" rx="25" ry="25"/>
+            <ellipse cx="150" cy="50" rx="45" ry="45"/>
+            <ellipse cx="125" cy="75" rx="70" ry="70"/>
+        </g>
+    </svg>
+
+    <!-- TRANSITION OVERLAY -->
+    <div id="transition-overlay">
+        <div class="web-transition"></div>
+        <div class="bat-transition"></div>
     </div>
-  </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container hero-content">
-      <h1>
-        Crafting digital <br>
-        <span class="text-gradient">experiences</span> that <br>
-        feel alive.
-      </h1>
-      <p>
-        I'm Sushil Adhikari, a product designer blending aesthetic precision
-        with robust UX thinking to build products people love.
-      </p>
-      <a href="#work" class="btn btn-primary">View Projects</a>
-    </div>
-  </section>
+    <!-- LIGHTNING FLASH (Batman) -->
+    <div id="lightning-flash"></div>
 
-  <!-- ASSSOCIATED BRANDS / CLIENTS (Optional placeholder) -->
-  <!-- Could add a ticker here later -->
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="logo">
+                <span class="logo-text spidey-logo">SUSHI<span class="logo-dot">.</span></span>
+                <span class="logo-text bat-logo">SUSHI<span class="logo-dot">.</span></span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="#about"><span class="link-text">About</span></a>
+                <a href="#work"><span class="link-text">Work</span></a>
+                <a href="#playground"><span class="link-text">Lab</span></a>
+                <a href="#contact"><span class="link-text">Contact</span></a>
+            </div>
 
-  <!-- ABOUT -->
-  <section id="about" class="about">
-    <div class="container">
-      <h2 class="section-title reveal">About Me</h2>
-      <div class="about-grid reveal">
-        <div class="about-text">
-          <p>
-            I believe that good design is invisible. It should just work.
-            My journey started with graphic design but quickly evolved into a passion for
-            solving complex problems through user interfaces.
-          </p>
-          <p>
-            Currently, I'm obsessed with micro-interactions and making web applications
-            feel as smooth as native apps. When I'm not designing, I'm probably
-            tweaking my VS Code theme or exploring new typography.
-          </p>
+            <!-- THEME SWITCHER -->
+            <button id="theme-toggle" class="theme-toggle" aria-label="Switch Theme">
+                <div class="toggle-track">
+                    <span class="toggle-icon toggle-spidey">🕷️</span>
+                    <span class="toggle-icon toggle-bat">🦇</span>
+                    <div class="toggle-thumb"></div>
+                </div>
+            </button>
         </div>
-        <div class="stats-container">
-          <div class="glass-card-mini">
-            <div class="lines">
-              <div class="line"></div>
-              <div class="line short"></div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-element"></div>
+        <div class="container hero-content">
+            <p class="hero-tagline">
+                <span class="spidey-text">Friendly Neighborhood Designer</span>
+                <span class="bat-text">The Dark Knight of UX</span>
+            </p>
+            <h1 class="hero-title">
+                <span class="glitch-container" data-text="SUSHIL">
+                    <span class="glitch-text">SUSHIL</span>
+                </span>
+                <span class="glitch-container" data-text="ADHIKARI">
+                    <span class="glitch-text">ADHIKARI</span>
+                </span>
+            </h1>
+            <p class="hero-description">
+                <span class="spidey-text">Swinging through pixels, building webs of user delight. With great power comes great user experiences.</span>
+                <span class="bat-text">I am the night. I am the UX. Crafting interfaces from the shadows to bring light to the user journey.</span>
+            </p>
+            <div class="hero-cta">
+                <a href="#work" class="btn btn-primary">
+                    <span class="spidey-text">Swing Into Action</span>
+                    <span class="bat-text">Investigate Cases</span>
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <span class="spidey-text">Web Me</span>
+                    <span class="bat-text">Signal Me</span>
+                </a>
             </div>
-          </div>
-          <div class="stats">
-            <div class="stat">
-              <h4>3+</h4>
-              <span>Years Exp.</span>
-            </div>
-            <div class="stat">
-              <h4>20+</h4>
-              <span>Projects</span>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CREATIVE PLAYGROUND / DESIGN ELEMENTS -->
-  <section id="playground" class="playground">
-    <div class="container">
-      <div style="margin-bottom: 64px;">
-        <h2 class="section-title reveal">UI Playground</h2>
-        <p class="reveal" style="color: var(--muted); max-width: 500px;">
-          A collection of experimental components and interactions.
-          I love exploring different visual styles.
-        </p>
-      </div>
-
-      <div class="elements-grid reveal">
-        <!-- Card 1: Toggle -->
-        <div class="element-card">
-          <div class="toggle-switch"></div>
-          <span style="margin-top: 16px; color: var(--muted); font-size: 12px;">Interactive Toggle</span>
+        
+        <!-- Hero Visual Element -->
+        <div class="hero-visual-container">
+            <div class="spidey-visual-element"></div>
+            <div class="bat-signal-element">
+                <div class="signal-glow"></div>
+                <div class="signal-icon"></div>
+            </div>
         </div>
+    </section>
 
-        <!-- Card 2: Glassmorph Card -->
-        <div class="element-card">
-          <div class="glass-card-mini" style="background: rgba(255,255,255,0.05);">
-            <div class="avatar"></div>
-            <div class="lines">
-              <div class="line" style="width: 80%"></div>
-              <div class="line" style="width: 40%"></div>
+    <!-- ABOUT SECTION -->
+    <section id="about" class="about section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-accent"></span>
+                <span class="spidey-text">Origin Story</span>
+                <span class="bat-text">Classified Dossier</span>
+            </h2>
+            
+            <div class="about-grid">
+                <div class="about-main">
+                    <div class="comic-panel about-panel">
+                        <p class="spidey-text">
+                            It all started with a bite—a radioactive spark of curiosity for design. 
+                            Now, I swing between wireframes and prototypes, fighting the villains of bad UX. 
+                            My superpower? Seeing through the user's eyes.
+                        </p>
+                        <p class="bat-text">
+                            I wasn't born in the darkness. I chose it. After witnessing the chaos of unusable interfaces,
+                            I dedicated my life to a crusade against poor user experience. 
+                            I am vengeance. I am precision design.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">3+</div>
+                        <div class="stat-label">Years Fighting Crime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">20+</div>
+                        <div class="stat-label">Missions Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-label">Pixels Perfected</div>
+                    </div>
+                </div>
+                
+                <div class="skills-grid">
+                    <div class="skill-tag">UI Design</div>
+                    <div class="skill-tag">UX Research</div>
+                    <div class="skill-tag">Prototyping</div>
+                    <div class="skill-tag">Design Systems</div>
+                    <div class="skill-tag">Figma</div>
+                    <div class="skill-tag">Interaction Design</div>
+                </div>
             </div>
-          </div>
-          <span style="margin-top: 16px; color: var(--muted); font-size: 12px;">Glassmorphism Container</span>
         </div>
+    </section>
 
-        <!-- Card 3: Gradient Button -->
-        <div class="element-card">
-          <button class="btn btn-primary"
-            style="background: linear-gradient(to right, var(--accent), #3b82f6); border: none;">
-            Gradient Action
-          </button>
-          <span style="margin-top: 16px; color: var(--muted); font-size: 12px;">Gradient Buttons</span>
+    <!-- WORK SECTION -->
+    <section id="work" class="work section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-accent"></span>
+                <span class="spidey-text">Web-Slinging Action</span>
+                <span class="bat-text">Case Files</span>
+            </h2>
+            
+            <div class="project-grid">
+                <!-- Project 1 -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <span class="project-number">01</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Project Venom</h3>
+                        <p class="project-desc">A dark mode dashboard that bites back. Complex data, simple interface.</p>
+                        <div class="project-tags">
+                            <span>Dashboard</span>
+                            <span>Dark UI</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <span class="project-number">02</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Gotham Transit</h3>
+                        <p class="project-desc">Reimagining urban mobility for nocturnal citizens.</p>
+                        <div class="project-tags">
+                            <span>Mobile App</span>
+                            <span>Maps</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <span class="project-number">03</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Daily Bugle Redesign</h3>
+                        <p class="project-desc">News platform for the modern age. Fast, responsive, trustworthy.</p>
+                        <div class="project-tags">
+                            <span>Web Design</span>
+                            <span>News</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
         </div>
+    </section>
 
-        <!-- Card 4: Floating Badge -->
-        <div class="element-card">
-          <div
-            style="padding: 8px 16px; background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">
-            ✨ Status: Active
-          </div>
-          <span style="margin-top: 16px; color: var(--muted); font-size: 12px;">Glow Effects</span>
+    <!-- PLAYGROUND SECTION -->
+    <section id="playground" class="playground section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-accent"></span>
+                <span class="spidey-text">Peter's Lab</span>
+                <span class="bat-text">R&D Department</span>
+            </h2>
+            <p class="section-subtitle">
+                <span class="spidey-text">Experimental web fluids and gadgets</span>
+                <span class="bat-text">Prototype gadgets and tactical equipment</span>
+            </p>
+            
+            <div class="playground-grid">
+                <!-- Buttons Demo -->
+                <div class="play-card">
+                    <h4>Buttons</h4>
+                    <div class="play-demo">
+                        <button class="demo-btn spidey-btn">Thwip!</button>
+                        <button class="demo-btn bat-btn">Engage</button>
+                    </div>
+                </div>
+
+                <!-- Toggle Demo -->
+                <div class="play-card">
+                    <h4>Toggles</h4>
+                    <div class="play-demo">
+                        <label class="demo-toggle">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Card Demo -->
+                <div class="play-card">
+                    <h4>Cards</h4>
+                    <div class="play-demo">
+                        <div class="demo-card">
+                            <div class="demo-card-content">Hover Me</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Demo -->
+                <div class="play-card">
+                    <h4>Inputs</h4>
+                    <div class="play-demo">
+                        <input type="text" class="demo-input" placeholder="Enter something...">
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- WORK -->
-  <section id="work" class="work">
-    <div class="container">
-      <h2 class="section-title reveal">Selected Work</h2>
-
-      <div class="project-grid">
-        <!-- Project 1 -->
-        <a href="#" class="project-card reveal">
-          <div class="project-image">
-            <!-- Placeholder for project image -->
-            <div
-              style="width: 100%; height: 100%; background: linear-gradient(120deg, #1a1a1a, #2a2a2a); display: flex; align-items: center; justify-content: center; color: #333; font-weight: bold;">
-              PROJECT PREVIEW
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="contact section">
+        <div class="container contact-container">
+            <h2 class="section-title">
+                <span class="title-accent"></span>
+                <span class="spidey-text">Send a Web Signal</span>
+                <span class="bat-text">Light the Signal</span>
+            </h2>
+            
+            <p class="contact-text">
+                <span class="spidey-text">Got a mission? Let's team up and save the web together!</span>
+                <span class="bat-text">Gotham needs saving. Your project needs designing. Let's talk.</span>
+            </p>
+            
+            <a href="mailto:sushilforwork@gmail.com" class="contact-email">
+                sushilforwork@gmail.com
+            </a>
+            
+            <div class="social-links">
+                <a href="#" class="social-link">Dribbble</a>
+                <a href="#" class="social-link">LinkedIn</a>
+                <a href="#" class="social-link">Twitter</a>
             </div>
-          </div>
-          <div class="project-info">
-            <h3>Fintech Dashboard</h3>
-            <p>A comprehensive financial management tool for modern banking.</p>
-            <div class="tags">
-              <span class="tag">UI Design</span>
-              <span class="tag">Design System</span>
-            </div>
-          </div>
-        </a>
+        </div>
+    </section>
 
-        <!-- Project 2 -->
-        <a href="#" class="project-card reveal">
-          <div class="project-image">
-            <div
-              style="width: 100%; height: 100%; background: linear-gradient(120deg, #1e1b4b, #312e81); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-weight: bold;">
-              MOBILE APP
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <p class="footer-text">
+                © 2025 Sushil Adhikari. 
+                <span class="spidey-text">Made with great responsibility.</span>
+                <span class="bat-text">Built in the shadows.</span>
+            </p>
+            <div class="footer-easter">
+                <span class="spidey-text">🕸️</span>
+                <span class="bat-text">🦇</span>
             </div>
-          </div>
-          <div class="project-info">
-            <h3>Wellness App</h3>
-            <p>Mobile application focused on mental health tracking and meditation.</p>
-            <div class="tags">
-              <span class="tag">Mobile UX</span>
-              <span class="tag">Prototyping</span>
-            </div>
-          </div>
-        </a>
+        </div>
+    </footer>
 
-        <!-- Project 3 -->
-        <a href="#" class="project-card reveal">
-          <div class="project-image">
-            <div
-              style="width: 100%; height: 100%; background: linear-gradient(120deg, #0f172a, #334155); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-weight: bold;">
-              ECOMMERCE
-            </div>
-          </div>
-          <div class="project-info">
-            <h3>E-Commerce Scale</h3>
-            <p>Redesigning the checkout flow for a major fashion retailer.</p>
-            <div class="tags">
-              <span class="tag">Research</span>
-              <span class="tag">Conversion</span>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
+    <!-- PERIODIC BATS CONTAINER (for flying bats in Batman mode) -->
+    <div id="periodic-bats"></div>
 
-  <!-- CONTACT -->
-  <section id="contact" class="contact">
-    <div class="container">
-      <h2 class="section-title reveal">What's Next?</h2>
-      <br>
-      <p class="reveal" style="color: var(--muted); max-width: 600px; margin: 0 auto;">
-        I'm currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is
-        always open.
-      </p>
-      <a href="mailto:sushilforwork@gmail.com" class="big-link text-gradient reveal">
-        Say Hello
-      </a>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container footer-content">
-      <p>© 2025 Sushil Adhikari. Built with inspiration.</p>
-      <div style="display: flex; gap: 24px;">
-        <a href="#">Twitter</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Dribbble</a>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
-
 </html>
