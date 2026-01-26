@@ -1,0 +1,16 @@
+.three-d-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+@media (max-width: 1024px) {
+    .three-d-container {
+        display: none;
+    }
+}

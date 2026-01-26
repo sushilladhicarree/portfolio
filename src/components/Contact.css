@@ -1,0 +1,73 @@
+.contact {
+    text-align: center;
+}
+
+.contact-container {
+    max-width: 800px;
+}
+
+.contact-text {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+.contact-email {
+    display: inline-block;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 900;
+    text-decoration: none;
+    margin-bottom: 60px;
+    transition: all 0.4s ease;
+}
+
+.theme-spidey .contact-email {
+    font-family: 'Bangers', cursive;
+    color: #E23636;
+    text-shadow: 2px 2px 0 #1E3A8A;
+}
+
+.theme-spidey .contact-email:hover {
+    transform: scale(1.05) rotate(-1deg);
+}
+
+.theme-batman .contact-email {
+    font-family: 'Anton', sans-serif;
+    color: #FFE600;
+    text-shadow: 0 0 20px rgba(255, 230, 0, 0.3);
+}
+
+.theme-batman .contact-email:hover {
+    text-shadow: 0 0 40px rgba(255, 230, 0, 0.6);
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.social-link {
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.theme-spidey .social-link {
+    color: #1A1A2E;
+    font-family: 'Comic Neue', cursive;
+}
+
+.theme-spidey .social-link:hover {
+    color: #E23636;
+}
+
+.theme-batman .social-link {
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.theme-batman .social-link:hover {
+    color: #FFE600;
+}

@@ -1,0 +1,54 @@
+.cursor, .cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10001;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    mix-blend-mode: difference;
+}
+
+.cursor {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.1s ease;
+}
+
+.cursor-follower {
+    width: 40px;
+    height: 40px;
+    z-index: 10000;
+    transition: all 0.15s ease-out;
+}
+
+/* Spidey Cursor */
+.cursor-spidey {
+    background-color: #E23636;
+}
+
+.follower-spidey {
+    border: 2px solid #E23636;
+    background: rgba(226, 54, 54, 0.1);
+}
+
+/* Batman Cursor */
+.cursor-batman {
+    background-color: #FFE600;
+    box-shadow: 0 0 10px #FFE600;
+}
+
+.follower-batman {
+    border: 1px solid #FFE600;
+    background: transparent;
+}
+
+/* Hover States */
+.cursor.hover {
+    transform: translate(-50%, -50%) scale(2);
+}
+
+.cursor-follower.hover {
+    width: 60px;
+    height: 60px;
+}

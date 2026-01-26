@@ -1,0 +1,55 @@
+/* ===== APP.CSS - Global Styles ===== */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Comic+Neue:wght@400;700&family=Montserrat:wght@300;400;600;700;900&display=swap');
+
+/* Hide default cursor */
+* {
+    cursor: none !important;
+}
+
+.app {
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Section Base */
+.section {
+    padding: 120px 0;
+    position: relative;
+}
+
+/* Section Title */
+.section-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 60px;
+    position: relative;
+    display: inline-block;
+}
+
+.theme-spidey .section-title {
+    font-family: 'Bangers', cursive;
+    color: #1A1A2E;
+    text-shadow: 3px 3px 0 #E23636;
+}
+
+.theme-batman .section-title {
+    font-family: 'Anton', sans-serif;
+    background: linear-gradient(180deg, #fff 0%, #666 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 4px;
+}
+
+/* Interactive class for cursor hover detection */
+.interactive {
+    transition: all 0.3s ease;
+}

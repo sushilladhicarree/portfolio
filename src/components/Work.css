@@ -1,0 +1,125 @@
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+}
+
+.project-card {
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-image {
+    height: 280px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.theme-spidey .project-image {
+    background: linear-gradient(135deg, #E23636 0%, #1E3A8A 100%);
+    border: 3px solid #1A1A2E;
+}
+
+.theme-batman .project-image {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    border: 1px solid #333;
+}
+
+.project-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    transition: background 0.4s ease;
+}
+
+.project-card:hover .project-overlay {
+    background: rgba(0,0,0,0.6);
+}
+
+.project-number {
+    font-size: 5rem;
+    font-weight: 900;
+    opacity: 0.3;
+    transition: all 0.4s ease;
+}
+
+.theme-spidey .project-number {
+    font-family: 'Bangers', cursive;
+    color: white;
+}
+
+.theme-batman .project-number {
+    font-family: 'Anton', sans-serif;
+    color: #FFE600;
+}
+
+.project-card:hover .project-number {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+.project-content {
+    padding: 24px 0;
+}
+
+.project-title {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.project-desc {
+    opacity: 0.7;
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.project-tags {
+    display: flex;
+    gap: 8px;
+}
+
+.project-tags span {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.theme-spidey .project-tags span {
+    background: #1E3A8A;
+    color: white;
+}
+
+.theme-batman .project-tags span {
+    background: rgba(255, 230, 0, 0.1);
+    color: #FFE600;
+    border: 1px solid rgba(255, 230, 0, 0.3);
+}
+
+/* Hover Effects */
+.theme-spidey .project-card:hover {
+    transform: rotate(-2deg) scale(1.02);
+}
+
+.theme-spidey .project-card:hover .project-image {
+    box-shadow: 8px 8px 0 #1A1A2E;
+}
+
+.theme-batman .project-card:hover {
+    transform: translateY(-10px);
+}
+
+.theme-batman .project-card:hover .project-image {
+    border-color: #FFE600;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768px) {
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+}

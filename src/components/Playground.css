@@ -1,0 +1,438 @@
+.playground {
+    position: relative;
+}
+
+.theme-spidey .playground {
+    background: linear-gradient(180deg, #FAFAFA 0%, #f0f0f0 100%);
+}
+
+.theme-batman .playground {
+    background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%);
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 50px;
+    opacity: 0.7;
+}
+
+.playground-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.play-card {
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.theme-spidey .play-card {
+    background: white;
+    border: 3px dashed #E23636;
+}
+
+.theme-spidey .play-card:hover {
+    border-style: solid;
+    box-shadow: 5px 5px 0 #1E3A8A;
+}
+
+.theme-batman .play-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid #333;
+}
+
+.theme-batman .play-card:hover {
+    border-color: #FFE600;
+}
+
+.play-card h4 {
+    margin-bottom: 24px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.7;
+}
+
+.play-demo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.demo-btn {
+    padding: 12px 24px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-btn {
+    position: relative;
+}
+
+.ripple {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: rippleEffect 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes rippleEffect {
+    to {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+    }
+}
+
+.spidey-btn {
+    background: #E23636;
+    color: white;
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1px;
+    border: 2px solid #1A1A2E;
+    box-shadow: 3px 3px 0 #1A1A2E;
+}
+
+.bat-btn {
+    background: transparent;
+    color: #FFE600;
+    border: 1px solid #FFE600;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Toggle */
+.demo-toggle {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    display: inline-block;
+}
+
+.demo-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    top: 4px;
+    left: 4px;
+    background: white;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.demo-toggle input:checked + .toggle-slider::before {
+    transform: translateX(28px);
+}
+
+.toggle-label {
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Slider */
+.slider-demo {
+    flex-direction: column;
+    gap: 16px;
+}
+
+.demo-slider {
+    width: 100%;
+    max-width: 200px;
+    height: 8px;
+    -webkit-appearance: none;
+    border-radius: 4px;
+    outline: none;
+}
+
+.theme-spidey .demo-slider {
+    background: #ddd;
+}
+
+.theme-spidey .demo-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #E23636;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #1A1A2E;
+}
+
+.theme-batman .demo-slider {
+    background: #333;
+}
+
+.theme-batman .demo-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #FFE600;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px #FFE600;
+}
+
+.slider-value {
+    font-weight: 900;
+    font-size: 1.5rem;
+}
+
+.theme-spidey .slider-value {
+    font-family: 'Bangers', cursive;
+    color: #E23636;
+}
+
+.theme-batman .slider-value {
+    font-family: 'Anton', sans-serif;
+    color: #FFE600;
+}
+
+/* Color Picker */
+.color-demo {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.color-swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.color-swatch.active {
+    transform: scale(1.2);
+}
+
+.color-preview {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    margin-top: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Loading */
+.loading-demo {
+    flex-direction: column;
+    gap: 20px;
+}
+
+.load-btn {
+    padding: 10px 24px;
+    font-weight: 600;
+}
+
+.theme-spidey .load-btn {
+    background: #1E3A8A;
+    color: white;
+    border: 2px solid #1A1A2E;
+}
+
+.theme-batman .load-btn {
+    background: transparent;
+    color: #FFE600;
+    border: 1px solid #FFE600;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+}
+
+.theme-spidey .spinner {
+    border-top-color: #E23636;
+    border-right-color: #1E3A8A;
+}
+
+.theme-batman .spinner {
+    border-top-color: #FFE600;
+}
+
+.progress-bar {
+    width: 100%;
+    max-width: 200px;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.theme-spidey .progress-bar {
+    background: #ddd;
+}
+
+.theme-batman .progress-bar {
+    background: #333;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.2s ease;
+}
+
+.theme-spidey .progress-fill {
+    background: linear-gradient(90deg, #E23636, #1E3A8A);
+}
+
+.theme-batman .progress-fill {
+    background: #FFE600;
+    box-shadow: 0 0 10px #FFE600;
+}
+
+/* Tooltip */
+.tooltip-demo {
+    position: relative;
+}
+
+.tooltip-trigger {
+    padding: 16px 32px;
+    font-weight: 600;
+    position: relative;
+    cursor: pointer;
+}
+
+.theme-spidey .tooltip-trigger {
+    background: #FFD93D;
+    border: 2px solid #1A1A2E;
+    font-family: 'Comic Neue', cursive;
+}
+
+.theme-batman .tooltip-trigger {
+    background: rgba(255, 230, 0, 0.1);
+    border: 1px solid #FFE600;
+    color: #FFE600;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 16px;
+    border-radius: 8px;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    z-index: 100;
+}
+
+.theme-spidey .tooltip {
+    background: #1A1A2E;
+    color: white;
+}
+
+.theme-batman .tooltip {
+    background: #FFE600;
+    color: #050505;
+}
+
+/* 3D Card */
+.demo-card-3d {
+    width: 150px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.theme-spidey .demo-card-3d {
+    background: linear-gradient(135deg, #E23636, #1E3A8A);
+    border: 3px solid #1A1A2E;
+    box-shadow: 5px 5px 0 #1A1A2E;
+}
+
+.theme-batman .demo-card-3d {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    border: 1px solid #FFE600;
+    box-shadow: 0 10px 30px rgba(255, 230, 0, 0.1);
+}
+
+.card-3d-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 2rem;
+    color: white;
+}
+
+.card-3d-content span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+/* Input */
+.demo-input {
+    padding: 12px 16px;
+    width: 100%;
+    max-width: 200px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.theme-spidey .demo-input {
+    background: white;
+    border: 2px solid #1A1A2E;
+    font-family: 'Comic Neue', cursive;
+}
+
+.theme-spidey .demo-input:focus {
+    border-color: #E23636;
+    box-shadow: 4px 4px 0 #E23636;
+}
+
+.theme-batman .demo-input {
+    background: #111;
+    border: 1px solid #333;
+    color: #E8E8E8;
+}
+
+.theme-batman .demo-input:focus {
+    border-color: #FFE600;
+    box-shadow: 0 0 15px rgba(255, 230, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .playground-grid {
+        grid-template-columns: 1fr;
+    }
+}

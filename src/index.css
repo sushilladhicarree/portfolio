@@ -1,0 +1,84 @@
+/* ===== INDEX.CSS - Base Reset & Theme Body ===== */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background-color 0.6s ease, color 0.6s ease;
+}
+
+/* ===== SPIDER-MAN THEME ===== */
+body.theme-spidey {
+    background-color: #FAFAFA;
+    color: #1A1A2E;
+    /* Comic dot pattern */
+    background-image: radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 16px 16px;
+}
+
+body.theme-spidey h1,
+body.theme-spidey h2,
+body.theme-spidey h3 {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+}
+
+/* ===== BATMAN THEME ===== */
+body.theme-batman {
+    background-color: #050505;
+    color: #E8E8E8;
+    background-image: linear-gradient(180deg, rgba(10,10,10,1) 0%, rgba(5,5,5,1) 100%);
+}
+
+body.theme-batman h1,
+body.theme-batman h2,
+body.theme-batman h3 {
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+body.theme-spidey ::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+body.theme-spidey ::-webkit-scrollbar-thumb {
+    background: #E23636;
+    border-radius: 4px;
+}
+
+body.theme-batman ::-webkit-scrollbar-track {
+    background: #111;
+}
+
+body.theme-batman ::-webkit-scrollbar-thumb {
+    background: #FFE600;
+    border-radius: 4px;
+}

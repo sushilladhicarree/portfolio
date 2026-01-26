@@ -1,0 +1,147 @@
+.about {
+    position: relative;
+}
+
+.about-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.about-panel {
+    padding: 40px;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    max-width: 700px;
+}
+
+.theme-spidey .about-panel {
+    background: white;
+    border: 3px solid #1A1A2E;
+    box-shadow: 8px 8px 0 #E23636;
+    position: relative;
+    font-family: 'Comic Neue', cursive;
+}
+
+.theme-spidey .about-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 40px;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #1A1A2E;
+}
+
+.theme-batman .about-panel {
+    background: linear-gradient(145deg, rgba(20,20,20,0.95), rgba(10,10,10,0.98));
+    border: 1px solid rgba(255, 230, 0, 0.15);
+    border-radius: 4px;
+    color: #ccc;
+}
+
+/* Stats */
+.about-stats {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 30px 40px;
+    flex: 1;
+    min-width: 140px;
+    transition: all 0.3s ease;
+}
+
+.theme-spidey .stat-card {
+    background: #1E3A8A;
+    color: white;
+    border: 3px solid #1A1A2E;
+    transform: rotate(2deg);
+}
+
+.theme-spidey .stat-card:nth-child(2) {
+    transform: rotate(-1deg);
+    background: #E23636;
+}
+
+.theme-spidey .stat-card:nth-child(3) {
+    transform: rotate(1.5deg);
+    background: #FFD93D;
+    color: #1A1A2E;
+}
+
+.theme-spidey .stat-card:hover {
+    transform: rotate(0deg) scale(1.05);
+}
+
+.theme-batman .stat-card {
+    background: rgba(255, 230, 0, 0.05);
+    border: 1px solid rgba(255, 230, 0, 0.2);
+}
+
+.theme-batman .stat-card:hover {
+    border-color: #FFE600;
+    box-shadow: 0 0 20px rgba(255, 230, 0, 0.1);
+}
+
+.stat-value {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.theme-spidey .stat-value {
+    font-family: 'Bangers', cursive;
+}
+
+.theme-batman .stat-value {
+    color: #FFE600;
+    font-family: 'Anton', sans-serif;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Skills */
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.skill-tag {
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.theme-spidey .skill-tag {
+    background: #FFD93D;
+    color: #1A1A2E;
+    border: 2px solid #1A1A2E;
+    font-family: 'Comic Neue', cursive;
+}
+
+.theme-spidey .skill-tag:hover {
+    transform: rotate(-3deg) scale(1.05);
+}
+
+.theme-batman .skill-tag {
+    background: transparent;
+    color: #E8E8E8;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.theme-batman .skill-tag:hover {
+    border-color: #FFE600;
+    color: #FFE600;
+}

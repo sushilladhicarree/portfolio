@@ -1,0 +1,121 @@
+.effects-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Lightning Flash */
+.lightning-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    opacity: 0;
+    z-index: 9998;
+    pointer-events: none;
+    transition: opacity 0.05s ease;
+}
+
+.lightning-flash.active {
+    opacity: 0.7;
+}
+
+/* Flying Bats Container */
+.flying-bats-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.flying-bat {
+    position: absolute;
+    font-size: 2rem;
+    left: -50px;
+    animation: flyAcross 4s linear forwards;
+}
+
+@keyframes flyAcross {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(calc(100vw + 100px)) translateY(-50px) rotate(-10deg);
+        opacity: 0;
+    }
+}
+
+/* Transition Overlay */
+.transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.transition-bat {
+    position: absolute;
+    bottom: -50px;
+    animation: batFlyUp 0.8s ease-out forwards;
+}
+
+@keyframes batFlyUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-120vh) rotate(-20deg);
+        opacity: 0;
+    }
+}
+
+/* Spider Webs */
+.web-corner {
+    position: fixed;
+    width: 180px;
+    height: 180px;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    color: rgba(0, 0, 0, 0.1);
+}
+
+.theme-spidey .web-corner {
+    opacity: 1;
+}
+
+.web-top-left {
+    top: 0;
+    left: 0;
+}
+
+.web-top-right {
+    top: 0;
+    right: 0;
+}
