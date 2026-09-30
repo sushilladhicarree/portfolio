@@ -1,22 +1,6 @@
-import { useTheme } from '../context/ThemeContext';
-import './Footer.css';
-
+import { useTheme } from '../context/theme-state';
+import { Icon } from './Icons';
 export default function Footer() {
-    const { isSpidey } = useTheme();
-
-    return (
-        <footer className="footer">
-            <div className="container footer-inner">
-                <p className="footer-text">
-                    © 2025 Sushil Adhikari. 
-                    {isSpidey 
-                        ? ' Made with great responsibility.'
-                        : ' Built in the shadows.'}
-                </p>
-                <div className="footer-easter">
-                    {isSpidey ? '🕸️' : '🦇'}
-                </div>
-            </div>
-        </footer>
-    );
+    const { collected, isSpidey, soundEnabled, setSoundEnabled, motionPaused, setMotionPaused } = useTheme();
+    return <footer className="footer container"><div><strong>SUSHI.</strong><span>© {new Date().getFullYear()} Sushil Adhikari<br/>Made with great responsibility.</span></div><div className="collection-count"><span>{isSpidey ? 'SPIDER-SENSE' : 'DETECTIVE MODE'}</span><span className="collection-dots">{[0,1,2,3,4].map(i=><i key={i} className={i<collected.length?'filled':''}/>)}</span><span>{collected.length}/5 SECRETS</span></div><div className="footer-controls"><button className="icon-button" aria-label={soundEnabled?'Mute sound effects':'Enable sound effects'} aria-pressed={soundEnabled} onClick={()=>setSoundEnabled(!soundEnabled)}><Icon name={soundEnabled?'sound':'mute'} size={16}/></button><button className="icon-button" aria-label={motionPaused?'Resume animations':'Pause animations'} aria-pressed={motionPaused} onClick={()=>setMotionPaused(!motionPaused)}><Icon name={motionPaused?'play':'pause'} size={16}/></button><a href="#hero" aria-label="Back to top">BACK TO TOP <Icon size={15}/></a></div></footer>;
 }

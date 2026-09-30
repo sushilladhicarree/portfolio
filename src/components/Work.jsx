@@ -1,126 +1,28 @@
-import { useTheme } from '../context/ThemeContext';
-import { motion } from 'framer-motion';
-import './Work.css';
+import { useEffect, useRef, useState } from 'react';
+import { projects } from '../data/projects';
+import { Icon, SpiderMark } from './Icons';
+import { Reveal, Secret, SectionHeading } from './Shared';
 
-const projects = [
-    {
-        id: 1,
-        title: 'Project Venom',
-        description: 'A dark mode dashboard that bites back. Complex data, simple interface.',
-        tags: ['Dashboard', 'Dark UI']
-    },
-    {
-        id: 2,
-        title: 'Gotham Transit',
-        description: 'Reimagining urban mobility for nocturnal citizens.',
-        tags: ['Mobile App', 'Maps']
-    },
-    {
-        id: 3,
-        title: 'Daily Bugle Redesign',
-        description: 'News platform for the modern age. Fast, responsive, trustworthy.',
-        tags: ['Web Design', 'News']
-    }
-];
+function ProjectPreview({ project }) {
+    if (project.id === 'miti') return <div className="project-preview preview-miti" aria-hidden="true"><span className="preview-word">मिति</span><div className="phone-mock"><div className="phone-notch"/><span className="phone-status">9:41 <span>••• ▰</span></span><div className="calendar-title">मिति <small>NEPALI CALENDAR</small></div><div className="calendar-month">असोज <span>२०८३</span></div><div className="calendar-grid">{Array.from({length:35},(_,i) => <span key={i} className={i===19?'selected':i%7===6?'holiday':''}>{i < 3 || i > 32 ? '' : i-2}</span>)}</div><div className="calendar-note"><span className="status-dot"/> A simpler way to plan your day.</div><div className="phone-tabs">▦ <span>◷</span> ◉</div></div><span className="preview-tag">SMALL SCREEN. BIG CLARITY.</span></div>;
+    if (project.id === 'samyojak') return <div className="project-preview preview-samyojak" aria-hidden="true"><div className="browser-mock"><div className="browser-bar"><i/><i/><i/><span>samyojak.com</span></div><div className="dashboard"><div className="dash-side"><strong>Samyojak<span>↗</span></strong><span>Overview</span><span className="selected">Today</span><span>Bookings</span><span>Reports</span><small>THE SMART FRONT DESK</small></div><div className="dash-body"><span>YOUR DAY, AT A GLANCE</span><h4>Good morning.</h4><div className="dash-stats"><div><span>Check-ins</span><strong>06</strong></div><div><span>Occupancy</span><strong>83<span>%</span></strong></div></div><div className="dash-row"><span className="room">204</span><span>Guest check-in<small>Ready for arrival</small></span><i>Confirmed</i></div><div className="dash-row"><span className="room">205</span><span>New booking<small>Stay details organized</small></span><i>Arriving</i></div></div></div></div><span className="preview-tag">LESS PAPERWORK. MORE HOSPITALITY.</span></div>;
+    return <div className="project-preview preview-himali" aria-hidden="true"><div className="shop-mock"><div className="shop-nav"><strong>himali<span>green</span></strong><span>Shop / Makers</span></div><div className="shop-head"><small>NEPALI. NATURAL. HANDMADE.</small><h4>Good things.<br/>Local roots.</h4><div className="hill hill-one"/><div className="hill hill-two"/><div className="shop-sun"/></div><div className="shop-products"><div><span className="product-jar">HONEY</span><small>From the hills</small></div><div><span className="product-bag">TEA</span><small>From the farm</small></div><div><span className="product-soap">✳</span><small>Made by hand</small></div></div></div><span className="preview-tag">BUILT AROUND NEPAL’S MAKERS.</span></div>;
+}
 
 export default function Work() {
-    const { isSpidey } = useTheme();
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2
-            }
-        }
-    };
-
-    const cardVariants = {
-        hidden: { y: 80, opacity: 0, rotateX: 15 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            rotateX: 0,
-            transition: {
-                type: 'spring',
-                stiffness: 80,
-                damping: 15
-            }
-        }
-    };
-
-    return (
-        <section id="work" className="work section">
-            <div className="container">
-                <motion.h2 
-                    className="section-title"
-                    initial={{ x: -50, opacity: 0 }}
-                    whileInView={{ x: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
-                    {isSpidey ? 'Web-Slinging Action' : 'Case Files'}
-                </motion.h2>
-                
-                <motion.div 
-                    className="project-grid"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.1 }}
-                >
-                    {projects.map((project, index) => (
-                        <motion.article 
-                            key={project.id} 
-                            className="project-card interactive"
-                            variants={cardVariants}
-                            whileHover={{ 
-                                scale: 1.03,
-                                rotateY: isSpidey ? (index % 2 ? 5 : -5) : 0,
-                                rotateX: isSpidey ? -5 : 0,
-                                y: -15,
-                                transition: { type: 'spring', stiffness: 300 }
-                            }}
-                            whileTap={{ scale: 0.98 }}
-                            style={{ perspective: 1000 }}
-                        >
-                            <motion.div 
-                                className="project-image"
-                                whileHover={{
-                                    boxShadow: isSpidey 
-                                        ? '12px 12px 0 #1A1A2E'
-                                        : '0 30px 60px rgba(255, 230, 0, 0.15)'
-                                }}
-                            >
-                                <div className="project-overlay">
-                                    <motion.span 
-                                        className="project-number"
-                                        initial={{ scale: 0.5, opacity: 0.3 }}
-                                        whileHover={{ scale: 1.2, opacity: 0.9 }}
-                                    >
-                                        0{index + 1}
-                                    </motion.span>
-                                </div>
-                            </motion.div>
-                            <div className="project-content">
-                                <h3 className="project-title">{project.title}</h3>
-                                <p className="project-desc">{project.description}</p>
-                                <div className="project-tags">
-                                    {project.tags.map(tag => (
-                                        <motion.span 
-                                            key={tag}
-                                            whileHover={{ scale: 1.1 }}
-                                        >
-                                            {tag}
-                                        </motion.span>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.article>
-                    ))}
-                </motion.div>
-            </div>
-        </section>
-    );
+    const [filter, setFilter] = useState('All');
+    const [selected, setSelected] = useState(null);
+    const dialog = useRef();
+    useEffect(() => {
+        if (selected) dialog.current.showModal();
+    }, [selected]);
+    return <section id="work" className="work section container">
+        <SectionHeading number="03" eyebrow="SELECTED WORK / YARSA HIMALAYA" title="Real-world" accent="missions."><p>From design to the browser.<br/>From the browser to your pocket.</p></SectionHeading>
+        <div className="work-toolbar"><div className="filter-tabs" role="group" aria-label="Filter projects">{['All', 'Apps', 'Websites'].map(value => <button key={value} onClick={() => setFilter(value)} aria-pressed={filter === value} className={filter === value ? 'active' : ''}>{value}<span>{String(projects.filter(p => value==='All'||p.categories.includes(value)).length).padStart(2,'0')}</span></button>)}</div><span className="work-note">FRONTEND AT YARSA HIMALAYA <Icon size={13}/></span></div>
+        <div className="project-grid">{projects.filter(p => filter==='All'||p.categories.includes(filter)).map((project, i) => <Reveal className={'project-card ' + project.color + (project.featured ? ' featured-project' : '')} key={project.id} delay={i*0.06}><button className="project-open" aria-label={'Explore ' + project.title} onClick={() => setSelected(project)}><ProjectPreview project={project}/><span className="project-view"><Icon size={24}/></span></button><div className="project-info"><div className="project-role-label">{project.label}</div><div className="project-category">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><button className="project-title-button" onClick={() => setSelected(project)}><h3>{project.title}</h3><Icon size={22}/></button><p>{project.description}</p>{project.featured && <><div className="contribution-grid"><div><span>MY ROLE</span><strong>Design → Frontend → Flutter</strong></div><div><span>APP EXPERIENCE</span><strong>Buyer + Seller</strong></div></div><button className="text-link" onClick={() => setSelected(project)}>Explore the project <Icon size={16}/></button></>}</div></Reveal>)}</div>
+        <div className="work-footer"><span>Himali Green: my frontend contribution. Miti & Samyojak: team products.<br/>Interface illustrations are portfolio interpretations.</span><a className="text-link" href="https://yarsahimalaya.com/" target="_blank" rel="noreferrer">Explore Yarsa Himalaya <Icon size={16}/></a><Secret id="work"/></div>
+        <dialog aria-labelledby="project-details-title" className="project-dialog" ref={dialog} onClose={() => setSelected(null)} onClick={(event) => { if(event.target===dialog.current) dialog.current.close(); }}>
+            {selected && <><button className="dialog-close icon-button" onClick={() => dialog.current.close()} aria-label="Close project details"><Icon name="close"/></button><div className="eyebrow">YARSA HIMALAYA · {selected.label}</div><h2 id="project-details-title">{selected.title}</h2><h3>{selected.subtitle}</h3><p>{selected.detail}</p><div className="project-attribution"><div><span>{selected.featured ? 'MY CONTRIBUTION' : 'PROJECT CONTEXT'}</span><strong>{selected.role}</strong></div><div><span>PRODUCT SCOPE</span><strong>{selected.scope}</strong></div></div><a href={selected.url} target="_blank" rel="noreferrer" className="button primary">Visit the live project <Icon/></a><SpiderMark className="dialog-spider"/></>}
+        </dialog>
+    </section>;
 }

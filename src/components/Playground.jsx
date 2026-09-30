@@ -1,297 +1,62 @@
-import { useState, useRef } from 'react';
-import { useTheme } from '../context/ThemeContext';
-import { motion, AnimatePresence } from 'framer-motion';
-import './Playground.css';
+import { useEffect, useRef, useState } from 'react';
+import { useTheme } from '../context/theme-state';
+import { BatMark, Icon, SpiderMark, SplitMask } from './Icons';
+import { Reveal, Secret, SectionHeading } from './Shared';
 
 export default function Playground() {
-    const { isSpidey } = useTheme();
-    const [toggleOn, setToggleOn] = useState(false);
-    const [sliderValue, setSliderValue] = useState(50);
-    const [progressValue, setProgressValue] = useState(0);
-    const [showTooltip, setShowTooltip] = useState(false);
-    const [selectedColor, setSelectedColor] = useState('#E23636');
-    const [isLoading, setIsLoading] = useState(false);
-    const [ripples, setRipples] = useState([]);
-
-    // Simulate loading
-    const handleLoadingDemo = () => {
-        setIsLoading(true);
-        setProgressValue(0);
-        const interval = setInterval(() => {
-            setProgressValue(prev => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    setIsLoading(false);
-                    return 0;
-                }
-                return prev + 10;
-            });
-        }, 200);
-    };
-
-    // Ripple effect
-    const addRipple = (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const ripple = {
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
-            id: Date.now()
-        };
-        setRipples(prev => [...prev, ripple]);
-        setTimeout(() => {
-            setRipples(prev => prev.filter(r => r.id !== ripple.id));
-        }, 600);
-    };
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.1 }
+    const { isSpidey, reducedMotion, notify, playSound } = useTheme();
+    const [webPower, setWebPower] = useState(64);
+    const [webShot, setWebShot] = useState(false);
+    const [signalOn, setSignalOn] = useState(false);
+    const [activeSkill, setActiveSkill] = useState('Flutter');
+    const [angle, setAngle] = useState({x:0,y:0});
+    const timer = useRef();
+    const canvas = useRef();
+    const shotCount = useRef(0);
+    useEffect(() => () => clearTimeout(timer.current), []);
+    useEffect(() => {
+        const ctx = canvas.current.getContext('2d');
+        if (!ctx) return;
+        const width = canvas.current.width;
+        const height = canvas.current.height;
+        ctx.clearRect(0, 0, width, height);
+        if (!webShot) return;
+        ctx.strokeStyle = isSpidey ? '#f2eadd' : '#f7cd56';
+        ctx.lineWidth = 1.5 + webPower / 80;
+        const spokes = 10 + Math.round(webPower / 10);
+        for (let i = 0; i < spokes; i++) {
+            const theta = i / spokes * Math.PI * 2;
+            ctx.beginPath(); ctx.moveTo(width/2, height/2); ctx.lineTo(width/2+Math.cos(theta)*width, height/2+Math.sin(theta)*height); ctx.stroke();
         }
+        for (let ring = 1; ring <= 6; ring++) {
+            ctx.beginPath();
+            for (let i = 0; i <= spokes; i++) {
+                const theta = i / spokes * Math.PI * 2;
+                const radius = ring * 25;
+                const x = width/2+Math.cos(theta)*radius, y=height/2+Math.sin(theta)*radius;
+                if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+            }
+            ctx.stroke();
+        }
+    }, [isSpidey, webPower, webShot]);
+    const shoot = () => {
+        clearTimeout(timer.current);
+        setWebShot(true); playSound(900); shotCount.current++;
+        if (shotCount.current===3) notify('Triple THWIP! Try typing “thwip” anywhere outside an input.');
+        timer.current = setTimeout(() => setWebShot(false), 2200);
     };
-
-    const itemVariants = {
-        hidden: { y: 30, opacity: 0 },
-        visible: { y: 0, opacity: 1 }
+    const skillDetails = {
+        Flutter: ['Mobile, with intention.', 'Building app interfaces and interactions across mobile screens.'],
+        Websites: ['From idea to browser.', 'Responsive frontend experiences with thoughtful structure and UI.'],
+        'UI design': ['Details do the heavy lifting.', 'Layout, typography, components, and interaction design.'],
     };
-
-    const colors = ['#E23636', '#1E3A8A', '#FFD93D', '#10B981', '#8B5CF6', '#EC4899'];
-
-    return (
-        <section id="playground" className="playground section">
-            <div className="container">
-                <motion.h2 
-                    className="section-title"
-                    initial={{ x: -50, opacity: 0 }}
-                    whileInView={{ x: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                >
-                    {isSpidey ? "Peter's Lab" : 'R&D Department'}
-                </motion.h2>
-                <motion.p 
-                    className="section-subtitle"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 0.7 }}
-                    viewport={{ once: true }}
-                >
-                    {isSpidey 
-                        ? 'Experimental web fluids and gadgets'
-                        : 'Prototype gadgets and tactical equipment'}
-                </motion.p>
-                
-                <motion.div 
-                    className="playground-grid"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.1 }}
-                >
-                    {/* Buttons with Ripple */}
-                    <motion.div className="play-card" variants={itemVariants}>
-                        <h4>Buttons</h4>
-                        <div className="play-demo">
-                            <motion.button 
-                                className="demo-btn spidey-btn interactive ripple-btn"
-                                onClick={addRipple}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                Thwip!
-                                {ripples.map(ripple => (
-                                    <span 
-                                        key={ripple.id}
-                                        className="ripple"
-                                        style={{ left: ripple.x, top: ripple.y }}
-                                    />
-                                ))}
-                            </motion.button>
-                            <motion.button 
-                                className="demo-btn bat-btn interactive"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                Engage
-                            </motion.button>
-                        </div>
-                    </motion.div>
-
-                    {/* Toggle with Animation */}
-                    <motion.div className="play-card" variants={itemVariants}>
-                        <h4>Toggle</h4>
-                        <div className="play-demo">
-                            <motion.label 
-                                className="demo-toggle interactive"
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <input 
-                                    type="checkbox" 
-                                    checked={toggleOn}
-                                    onChange={() => setToggleOn(!toggleOn)}
-                                />
-                                <motion.span 
-                                    className="toggle-slider"
-                                    animate={{
-                                        backgroundColor: toggleOn 
-                                            ? (isSpidey ? '#E23636' : '#FFE600')
-                                            : (isSpidey ? '#1E3A8A' : '#333')
-                                    }}
-                                />
-                            </motion.label>
-                            <span className="toggle-label">{toggleOn ? 'ON' : 'OFF'}</span>
-                        </div>
-                    </motion.div>
-
-                    {/* Slider */}
-                    <motion.div className="play-card" variants={itemVariants}>
-                        <h4>Slider</h4>
-                        <div className="play-demo slider-demo">
-                            <input 
-                                type="range" 
-                                min="0" 
-                                max="100" 
-                                value={sliderValue}
-                                onChange={(e) => setSliderValue(e.target.value)}
-                                className="demo-slider"
-                            />
-                            <motion.span 
-                                className="slider-value"
-                                key={sliderValue}
-                                initial={{ scale: 1.3 }}
-                                animate={{ scale: 1 }}
-                            >
-                                {sliderValue}%
-                            </motion.span>
-                        </div>
-                    </motion.div>
-
-                    {/* Color Picker */}
-                    <motion.div className="play-card" variants={itemVariants}>
-                        <h4>Color Picker</h4>
-                        <div className="play-demo color-demo">
-                            {colors.map(color => (
-                                <motion.button
-                                    key={color}
-                                    className={`color-swatch ${selectedColor === color ? 'active' : ''}`}
-                                    style={{ backgroundColor: color }}
-                                    onClick={() => setSelectedColor(color)}
-                                    whileHover={{ scale: 1.2 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    animate={{
-                                        boxShadow: selectedColor === color 
-                                            ? `0 0 0 3px ${color}40`
-                                            : 'none'
-                                    }}
-                                />
-                            ))}
-                        </div>
-                        <div 
-                            className="color-preview"
-                            style={{ backgroundColor: selectedColor }}
-                        />
-                    </motion.div>
-
-                    {/* Loading Spinner & Progress */}
-                    <motion.div className="play-card" variants={itemVariants}>
-                        <h4>Loading</h4>
-                        <div className="play-demo loading-demo">
-                            <motion.button
-                                className="demo-btn load-btn"
-                                onClick={handleLoadingDemo}
-                                disabled={isLoading}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                {isLoading ? 'Loading...' : 'Start'}
-                            </motion.button>
-                            
-                            <AnimatePresence>
-                                {isLoading && (
-                                    <motion.div 
-                                        className="spinner"
-                                        initial={{ opacity: 0, rotate: 0 }}
-                                        animate={{ opacity: 1, rotate: 360 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ 
-                                            rotate: { duration: 1, repeat: Infinity, ease: 'linear' }
-                                        }}
-                                    />
-                                )}
-                            </AnimatePresence>
-                            
-                            <div className="progress-bar">
-                                <motion.div 
-                                    className="progress-fill"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${progressValue}%` }}
-                                />
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Tooltip */}
-                    <motion.div className="play-card" variants={itemVariants}>
-                        <h4>Tooltip</h4>
-                        <div className="play-demo tooltip-demo">
-                            <motion.div 
-                                className="tooltip-trigger interactive"
-                                onHoverStart={() => setShowTooltip(true)}
-                                onHoverEnd={() => setShowTooltip(false)}
-                                whileHover={{ scale: 1.05 }}
-                            >
-                                Hover Me
-                                <AnimatePresence>
-                                    {showTooltip && (
-                                        <motion.div 
-                                            className="tooltip"
-                                            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 10, scale: 0.8 }}
-                                        >
-                                            {isSpidey ? '🕷️ Spidey-sense!' : '🦇 I am Batman'}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
-                        </div>
-                    </motion.div>
-
-                    {/* 3D Card */}
-                    <motion.div className="play-card card-3d-demo" variants={itemVariants}>
-                        <h4>3D Card</h4>
-                        <div className="play-demo">
-                            <motion.div 
-                                className="demo-card-3d interactive"
-                                whileHover={{ 
-                                    rotateY: 15,
-                                    rotateX: -10,
-                                    scale: 1.05
-                                }}
-                                transition={{ type: 'spring', stiffness: 300 }}
-                                style={{ transformStyle: 'preserve-3d' }}
-                            >
-                                <div className="card-3d-content">
-                                    {isSpidey ? '🕸️' : '🦇'}
-                                    <span>Hover for 3D</span>
-                                </div>
-                            </motion.div>
-                        </div>
-                    </motion.div>
-
-                    {/* Input */}
-                    <motion.div className="play-card" variants={itemVariants}>
-                        <h4>Input</h4>
-                        <div className="play-demo">
-                            <motion.input 
-                                type="text" 
-                                className="demo-input" 
-                                placeholder="Type something..."
-                                whileFocus={{ scale: 1.02 }}
-                            />
-                        </div>
-                    </motion.div>
-                </motion.div>
-            </div>
-        </section>
-    );
+    return <section id="playground" className="playground section">
+        <div className="container"><SectionHeading number="04" eyebrow="R&D / AFTER HOURS" title={isSpidey ? 'Peter’s' : 'The Bat'} accent="lab."><p>A little playground for the curious.<br/>Go ahead. Push a button.</p></SectionHeading>
+        <div className="lab-grid">
+            <Reveal className="lab-card web-lab"><div className="lab-card-top"><span>01 / WEB-SHOOTER</span><Icon name="code" size={19}/></div><div className={'web-target ' + (webShot?'fired':'')}><canvas ref={canvas} width="500" height="320" aria-hidden="true"/>{!webShot && <><SpiderMark/><span>POINT. CLICK. THWIP.</span></>}<strong className="thwip-text">{webShot ? 'THWIP!' : ''}</strong><span className="target-corner tl"/><span className="target-corner br"/></div><div className="web-controls"><label htmlFor="web-power">WEB STRENGTH <strong>{webPower}%</strong></label><input id="web-power" type="range" min="10" max="100" value={webPower} onChange={e=>setWebPower(Number(e.target.value))}/><button className="button primary" onClick={shoot}>Fire the web <Icon name="arrow" size={16}/></button></div></Reveal>
+            <Reveal className={'lab-card signal-lab ' + (signalOn?'signal-on':'')} delay={0.08}><div className="lab-card-top"><span>02 / THE BAT-SIGNAL</span><button className="switch" role="switch" aria-checked={signalOn} aria-label="Activate Bat-Signal" onClick={()=>{setSignalOn(!signalOn);playSound(220);}}><span/></button></div><div className="signal-sky"><div className="signal-beam"/><div className="signal-moon"><BatMark/></div><div className="skyline" aria-hidden="true">{Array.from({length:12},(_,i)=><i key={i} style={{height:(25+(i*17)%65)+'%'}}/>)}</div></div><div className="signal-caption"><h3>{signalOn ? 'Gotham is listening.' : 'The city needs a signal.'}</h3><p>Flip the switch. Bring a little light to the dark.</p></div><Secret id="lab"/></Reveal>
+            <Reveal className="lab-card skill-lab" delay={0.12}><div className="lab-card-top"><span>03 / THE UTILITY BELT</span><Icon name="check" size={18}/></div><div className="skill-tabs" role="group" aria-label="Explore frontend skills">{Object.keys(skillDetails).map(skill=><button key={skill} aria-pressed={activeSkill===skill} className={activeSkill===skill?'active':''} onClick={()=>setActiveSkill(skill)}>{skill}</button>)}</div><div className="skill-detail"><span className="code-brackets">{activeSkill==='Flutter'?'✦':activeSkill==='Websites'?'</>':'Aa'}</span><h3>{skillDetails[activeSkill][0]}</h3><p>{skillDetails[activeSkill][1]}</p></div></Reveal>
+            <Reveal className="lab-card tilt-lab" delay={0.16}><div className="lab-card-top"><span>04 / MULTIVERSE ID</span><span className="live-tag">INTERACTIVE</span></div><div className="tilt-area" onPointerMove={e=>{if(reducedMotion||e.pointerType==='touch')return;const rect=e.currentTarget.getBoundingClientRect();setAngle({x:-(e.clientY-rect.top-rect.height/2)/14,y:(e.clientX-rect.left-rect.width/2)/14});}} onPointerLeave={()=>setAngle({x:0,y:0})}><div className="identity-card" style={{transform:'rotateX('+angle.x+'deg) rotateY('+angle.y+'deg)'}}><div className="identity-header">SUSHI’S UNIVERSE <span>№ 001</span></div><SplitMask/><div className="identity-footer"><strong>SUSHIL ADHIKARI</strong><span>FRONTEND DEVELOPER / EARTH–NP</span><div className="barcode"/></div></div></div><p className="tilt-hint">HOVER TO SHIFT YOUR PERSPECTIVE</p></Reveal>
+        </div><div className="lab-note"><span>CURIOUS MINDS FIND THE BEST EASTER EGGS.</span><span>Hint: five little emblems are hiding in plain sight.</span></div></div>
+    </section>;
 }

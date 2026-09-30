@@ -1,72 +1,94 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { ThemeContext } from './theme-state';
 
-const ThemeContext = createContext();
-
-export const THEMES = {
-    SPIDEY: 'spidey',
-    BATMAN: 'batman'
+const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+const subscribeMotion = (callback) => {
+    motionQuery.addEventListener('change', callback);
+    return () => motionQuery.removeEventListener('change', callback);
 };
 
 export function ThemeProvider({ children }) {
-    const [theme, setTheme] = useState(THEMES.SPIDEY);
-    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [theme, setTheme] = useState(() => {
+        try { return localStorage.getItem('sushi-theme') === 'batman' ? 'batman' : 'spidey'; }
+        catch { return 'spidey'; }
+    });
+    const [motionPaused, setMotionPaused] = useState(false);
+    const [soundEnabled, setSoundEnabled] = useState(false);
+    const [collected, setCollected] = useState([]);
+    const [toast, setToast] = useState('');
+    const timer = useRef();
+    const audio = useRef();
+    const prefersReducedMotion = useSyncExternalStore(subscribeMotion, () => motionQuery.matches);
+    const reducedMotion = prefersReducedMotion || motionPaused;
 
-    useEffect(() => {
-        document.body.className = `theme-${theme}`;
-    }, [theme]);
-
-    // Sound effect function (optional, plays if audio files exist)
-    const playSound = useCallback((soundType) => {
-        try {
-            const sounds = {
-                toSpidey: '/sounds/thwip.mp3',
-                toBatman: '/sounds/bat-screech.mp3'
-            };
-            
-            const audio = new Audio(sounds[soundType]);
-            audio.volume = 0.3;
-            audio.play().catch(() => {
-                // Silently fail if sound doesn't exist
-            });
-        } catch {
-            // Sound not available
-        }
+    const notify = useCallback((message) => {
+        clearTimeout(timer.current);
+        setToast(message);
+        timer.current = setTimeout(() => setToast(''), 4000);
     }, []);
 
+    const playSound = useCallback((frequency = 440) => {
+        if (!soundEnabled) return;
+        try {
+            const AudioEngine = window.AudioContext || window.webkitAudioContext;
+            audio.current ??= new AudioEngine();
+            void audio.current.resume().catch(() => {});
+            const oscillator = audio.current.createOscillator();
+            const gain = audio.current.createGain();
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(frequency, audio.current.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(frequency / 3, audio.current.currentTime + 0.16);
+            gain.gain.setValueAtTime(0.055, audio.current.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audio.current.currentTime + 0.2);
+            oscillator.connect(gain).connect(audio.current.destination);
+            oscillator.start();
+            oscillator.stop(audio.current.currentTime + 0.21);
+        } catch { /* Sound is an optional enhancement. */ }
+    }, [soundEnabled]);
+
     const toggleTheme = useCallback(() => {
-        if (isTransitioning) return;
-        
-        setIsTransitioning(true);
-        
-        const newTheme = theme === THEMES.SPIDEY ? THEMES.BATMAN : THEMES.SPIDEY;
-        
-        // Play sound
-        playSound(newTheme === THEMES.SPIDEY ? 'toSpidey' : 'toBatman');
-        
-        // After transition animation
-        setTimeout(() => {
-            setTheme(newTheme);
-            setIsTransitioning(false);
-        }, 800);
-    }, [isTransitioning, theme, playSound]);
+        setTheme((current) => current === 'spidey' ? 'batman' : 'spidey');
+        playSound(660);
+    }, [playSound]);
 
-    return (
-        <ThemeContext.Provider value={{ 
-            theme, 
-            toggleTheme, 
-            isTransitioning,
-            isSpidey: theme === THEMES.SPIDEY,
-            isBatman: theme === THEMES.BATMAN
-        }}>
-            {children}
-        </ThemeContext.Provider>
-    );
-}
+    const collect = (id) => {
+        if (collected.includes(id)) { notify('Already collected. Keep exploring.'); return; }
+        const next = [...collected, id];
+        setCollected(next);
+        playSound(880);
+        notify(next.length === 5 ? '5/5 · Multiverse unlocked. Great power. Great frontend.' : next.length + '/5 · Secret found. Your spider-sense is working.');
+    };
 
-export function useTheme() {
-    const context = useContext(ThemeContext);
-    if (!context) {
-        throw new Error('useTheme must be used within ThemeProvider');
-    }
-    return context;
+    useEffect(() => {
+        document.documentElement.dataset.theme = theme;
+        try { localStorage.setItem('sushi-theme', theme); } catch { /* Storage may be unavailable. */ }
+    }, [theme]);
+
+    useEffect(() => {
+        let typed = '';
+        let sequence = [];
+        const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        const handleKey = (event) => {
+            if (event.target.closest('input, textarea, select, [contenteditable="true"]') || event.ctrlKey || event.metaKey || event.altKey) return;
+            const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+            if (key === 'g') toggleTheme();
+            typed = (typed + key).slice(-5);
+            if (typed === 'thwip') { notify('THWIP! Friendly neighborhood developer, reporting for duty.'); playSound(1000); }
+            sequence = [...sequence, key].slice(-10);
+            if (sequence.join(',') === konami.join(',')) {
+                setCollected(['hero', 'about', 'work', 'lab', 'contact']);
+                notify('Secret code accepted. Welcome to the multiverse.');
+                playSound(1200);
+            }
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+    }, [notify, playSound, toggleTheme]);
+
+    useEffect(() => () => {
+        clearTimeout(timer.current);
+        if (audio.current) void audio.current.close().catch(() => {});
+    }, []);
+
+    return <ThemeContext.Provider value={{ theme, toggleTheme, isSpidey: theme === 'spidey', reducedMotion, motionPaused, setMotionPaused, soundEnabled, setSoundEnabled, collected, collect, toast, notify, playSound }}>{children}</ThemeContext.Provider>;
 }
